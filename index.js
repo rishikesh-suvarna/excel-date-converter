@@ -3,6 +3,7 @@
  * A package for converting between Excel serial date numbers and JavaScript Date objects
  */
 
-const excelDate = require('./excel-date');
+import * as excelDate from './excel-date.js';
 
-module.exports = excelDate;
+export default excelDate;
+export const { excelDateToJsDate, jsDateToExcelDate, formatDate } = excelDate;

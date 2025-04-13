@@ -8,22 +8,100 @@ A lightweight JavaScript library to convert Excel serial date numbers to JavaScr
 npm install excel-date-converter
 ```
 
-## Usage
+## Features
+
+- Convert Excel serial date numbers to JavaScript Date objects
+- Convert JavaScript Date objects to Excel serial numbers
+- Handle Excel's 1900 leap year bug (February 29, 1900)
+- Format JavaScript dates with customizable patterns
+- ES Modules support
+
+## Usage with ES Modules
 
 ```javascript
-const excelDateConverter = require('excel-date-converter');
+// Import specific functions
+import { excelDateToJsDate, jsDateToExcelDate, formatDate } from 'excel-date-converter';
+
+// Or import everything as a namespace
+import * as excelDateConverter from 'excel-date-converter';
+```
+
+### Converting Excel Dates to JavaScript Dates
+
+```javascript
+import { excelDateToJsDate } from 'excel-date-converter';
 
 // Convert Excel date to JavaScript Date
-const jsDate = excelDateConverter.excelDateToJsDate(44562); // Returns Date object for December 31, 2021
-console.log(jsDate); // 2021-12-31T00:00:00.000Z
+const jsDate = excelDateToJsDate(44561); // Returns Date object for December 31, 2021
+console.log(jsDate.toISOString()); // 2021-12-31T00:00:00.000Z
+
+// Another example
+const newYearsDay = excelDateToJsDate(44562); // Returns Date object for January 1, 2022
+console.log(newYearsDay.toISOString()); // 2022-01-01T00:00:00.000Z
+```
+
+### Converting JavaScript Dates to Excel Dates
+
+```javascript
+import { jsDateToExcelDate } from 'excel-date-converter';
 
 // Convert JavaScript Date to Excel date
-const excelDate = excelDateConverter.jsDateToExcelDate(new Date('2021-12-31'));
-console.log(excelDate); // ~44562 (Excel serial number for December 31, 2021)
+const excelDate = jsDateToExcelDate(new Date('2021-12-31'));
+console.log(excelDate); // 44561 (Excel serial number for December 31, 2021)
 
-// Format date as string
-const formattedDate = excelDateConverter.formatDate(jsDate, 'YYYY-MM-DD HH:mm:ss');
-console.log(formattedDate); // 2021-12-31 00:00:00
+// Convert New Year's Day 2022
+const newYearExcelDate = jsDateToExcelDate(new Date('2022-01-01'));
+console.log(newYearExcelDate); // 44562 (Excel serial number for January 1, 2022)
+```
+
+### Formatting Dates
+
+```javascript
+import { excelDateToJsDate, formatDate } from 'excel-date-converter';
+
+// Convert Excel date to JavaScript Date
+const jsDate = excelDateToJsDate(44561);
+
+// Format with default pattern (YYYY-MM-DD)
+console.log(formatDate(jsDate)); // 2021-12-31
+
+// Format with custom patterns
+console.log(formatDate(jsDate, 'DD/MM/YYYY')); // 31/12/2021
+console.log(formatDate(jsDate, 'MM/DD/YYYY HH:mm:ss')); // 12/31/2021 00:00:00
+```
+
+### Handling Excel's Leap Year Bug
+
+Excel incorrectly treats 1900 as a leap year, including February 29, 1900 (day 60) which didn't exist.
+
+```javascript
+import { excelDateToJsDate } from 'excel-date-converter';
+
+// February 28, 1900 (day 59)
+const feb28 = excelDateToJsDate(59);
+console.log(feb28.toISOString()); // 1900-02-28T00:00:00.000Z
+
+// March 1, 1900 (day 61 - day 60 is the non-existent Feb 29)
+const mar1 = excelDateToJsDate(61);
+console.log(mar1.toISOString()); // 1900-03-01T00:00:00.000Z
+
+// Disable leap year bug adjustment
+const withoutBugFix = excelDateToJsDate(61, false);
+console.log(withoutBugFix.toISOString()); // 1900-03-02T00:00:00.000Z
+```
+
+## CommonJS Usage (Legacy)
+
+If you're using CommonJS, you'll need to use the dynamic import syntax:
+
+```javascript
+async function example() {
+  const excelModule = await import('excel-date-converter');
+  const jsDate = excelModule.excelDateToJsDate(44561);
+  console.log(jsDate);
+}
+
+example();
 ```
 
 ## API Reference
