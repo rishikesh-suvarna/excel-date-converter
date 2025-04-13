@@ -1,0 +1,31 @@
+{
+  "name": "excel-date-converter",
+  "version": "1.0.0",
+  "description": "Convert Excel serial dates to JavaScript Date objects and vice versa",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "excel",
+    "date",
+    "conversion",
+    "spreadsheet",
+    "datetime"
+  ],
+  "author": "Rishikesh Suvarna",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rishikesh-suvarna/excel-date-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rishikesh-suvarna/excel-date-converter/issues"
+  },
+  "homepage": "https://github.com/rishikesh-suvarna/excel-date-converter#readme"
+}
